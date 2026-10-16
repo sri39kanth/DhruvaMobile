@@ -1,0 +1,26 @@
+run-name: Check the build status
+
+on:
+  pull_request:
+
+concurrency:
+      group: ci-${{ github.ref }}
+      cancel-in-progress: true   # a new push cancels the older run
+
+jobs:
+  unit_test:
+       name: Runs All unit tests
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v7
+         - name: Setting Up the Java
+           uses: actions/setup-java@v6
+           with:
+             java-version: '25'
+             distribution: 'temurin'
+             architecture: x64
+         - run: java --version
+         - name: Setting Up Gradle
+           uses: gradle/actions/setup-gradle@v6
+         - name: Run the build
+           run: ./gradlew assembleDebug
