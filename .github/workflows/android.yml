@@ -1,7 +1,10 @@
-run-name: Check the build status
+run-name: Android CI
 
 on:
   pull_request:
+
+permissions:
+  contents: read
 
 concurrency:
       group: ci-${{ github.ref }}
@@ -9,7 +12,7 @@ concurrency:
 
 jobs:
   unit_test:
-       name: Runs All unit tests
+       name: build App
        runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@v7
@@ -22,5 +25,5 @@ jobs:
          - run: java --version
          - name: Setting Up Gradle
            uses: gradle/actions/setup-gradle@v6
-         - name: Run the build
-           run: ./gradlew assembleDebug
+         - name: Run the unit tests
+           run: ./gradlew build
