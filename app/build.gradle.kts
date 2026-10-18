@@ -39,6 +39,12 @@ android {
         compose = true
     }
 
+    lint {
+        warningsAsErrors = true
+        checkDependencies = true
+        abortOnError = true
+    }
+
     testOptions {
         unitTests.isIncludeAndroidResources = true
     }
