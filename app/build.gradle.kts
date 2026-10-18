@@ -1,6 +1,9 @@
+import com.android.build.api.variant.HasUnitTestBuilder
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -33,6 +36,20 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
+    testOptions.unitTests.isIncludeAndroidResources = true
+}
+
+androidComponents {
+    beforeVariants(selector().withBuildType("release")) { variant: HasUnitTestBuilder ->
+        // Use type-casting to safely enable the unit tests
+
+        variant.enableUnitTest = true
     }
 }
 
