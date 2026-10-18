@@ -49,7 +49,7 @@ androidComponents {
     beforeVariants(selector().withBuildType("release")) { variant: HasUnitTestBuilder ->
         // Use type-casting to safely enable the unit tests
 
-            variant.enableUnitTest = true
+        variant.enableUnitTest = true
     }
 }
 
