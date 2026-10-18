@@ -1,0 +1,58 @@
+name: Claude PR Summary
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pr-summary:
+    name: claude-pr-summary
+    # Skip drafts, and Dependabot PRs (they can't read repo secrets, so the job would fail)
+    if: github.event.pull_request.draft == false && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Write PR summary
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            You write the description of this pull request for the repo owner, a solo developer
+            building their first Android app (Kotlin, Compose, Hilt) to learn.
+
+            1. Read the PR with `gh pr view` and `gh pr diff`. The PR branch is already checked out.
+            2. Post exactly ONE comment with `gh pr comment`, in this format:
+
+               ## PR summary
+               **What:** one or two sentences.
+               **Changes:**
+               - bullets grouped by area (Build / CI / Code / Config / Docs); name the key files
+               **Why it matters:** one or two sentences.
+               **How to test:** the commands or steps to verify it (e.g. `./gradlew build`).
+               **Follow-ups:** anything left for a later PR, or "None".
+
+            Rules:
+            - Describe; do not review. Code review is done by a separate workflow.
+            - No code suggestions, no praise, no guessing; if something is unclear, say so.
+            - Keep it under 200 words.
+            - Only post the GitHub comment; do not reply with the summary as a message.
+          claude_args: |
+            --max-turns 5
+            --allowedTools "Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*)"
