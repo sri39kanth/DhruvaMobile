@@ -27,7 +27,7 @@ jobs:
           architecture: x64
       - run: java --version
       - name: Setting Up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6
       - name: Run the build
         run: ./gradlew testDebugUnitTest
   build_app:
@@ -43,7 +43,7 @@ jobs:
           architecture: x64
       - run: java --version
       - name: Setting Up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6
       - name: Run the build
         run: ./gradlew assembleDebug
 
@@ -61,7 +61,7 @@ jobs:
           architecture: x64
       - run: java --version
       - name: Setting Up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6
       - name: Ktlint check
         run: ./gradlew ktlintCheck
 
@@ -82,7 +82,7 @@ jobs:
           architecture: x64
       - run: java --version
       - name: Setting Up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6
 
       - name: Run detekt
         run: ./gradlew detekt
@@ -112,7 +112,7 @@ jobs:
           architecture: x64
       - run: java --version
       - name: Setting Up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6
 
       - name: Run lint
         run: ./gradlew lint
@@ -141,7 +141,7 @@ jobs:
           architecture: x64
       - run: java --version
       - name: Setting Up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6
 
       - name: Run kover coverage report
         run: ./gradlew koverXmlReportDebug koverVerifyDebug
@@ -170,7 +170,7 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       - name: Setting Up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6
 
       - name: Run sonar analysis
         env:
