@@ -31,6 +31,8 @@ jobs:
           gh api "repos/$REPO/issues/$PR/comments" --paginate \
             --jq ".[] | select(.user.login == \"claude[bot]\" and (.body | startswith(\"$HEADING\"))) | .node_id" |
           while read -r id; do
+            # $id below is a GraphQL variable, not a shell variable
+            # shellcheck disable=SC2016
             gh api graphql -f id="$id" \
               -f query='mutation($id: ID!) { minimizeComment(input: {subjectId: $id, classifier: OUTDATED}) { minimizedComment { isMinimized } } }'
           done
