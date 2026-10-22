@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -50,6 +51,18 @@ android {
     }
 
     testOptions.unitTests.isIncludeAndroidResources = true
+}
+
+kover {
+    reports {
+        variant("debug") {
+            verify {
+                rule {
+                    minBound(0)
+                }
+            }
+        }
+    }
 }
 
 androidComponents {

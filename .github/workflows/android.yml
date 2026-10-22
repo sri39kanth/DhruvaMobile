@@ -124,3 +124,26 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: app/build/reports/lint-results-debug.sarif
+  kover_coverage_report:
+    runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setting Up the Java
+        uses: actions/setup-java@v6
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          architecture: x64
+      - run: java --version
+      - name: Setting Up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Run kover coverage report
+        run: ./gradlew koverXmlReportDebug koverVerifyDebug
+
+
