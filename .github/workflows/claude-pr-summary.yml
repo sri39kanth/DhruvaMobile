@@ -29,11 +29,10 @@ jobs:
          HEADING: '## PR summary'   # '## Code review' in claude-code-review.yml
         run: |
           gh api "repos/$REPO/issues/$PR/comments" --paginate \
-          --jq ".[] | select(.user.login == \"claude[bot]\" and (.body | startswith(\"$HEADING\"))) | .node_id" |
+            --jq ".[] | select(.user.login == \"claude[bot]\" and (.body | startswith(\"$HEADING\"))) | .node_id" |
           while read -r id; do
-          gh api graphql -f id="$id" \
-         -f query='mutation($id:
-          ID!) { minimizeComment(input: { subjectId: $id, classifier: OUTDATED }) { minimizedComment { isMinimized } } }'
+            gh api graphql -f id="$id" \
+              -f query='mutation($id: ID!) { minimizeComment(input: {subjectId: $id, classifier: OUTDATED}) { minimizedComment { isMinimized } } }'
           done
       - name: Checkout repository
         uses: actions/checkout@v7
