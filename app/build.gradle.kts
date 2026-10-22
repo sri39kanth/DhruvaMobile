@@ -53,6 +53,18 @@ android {
     testOptions.unitTests.isIncludeAndroidResources = true
 }
 
+kover {
+    reports {
+        variant("debug") {
+            verify {
+                rule {
+                    minBound(0)
+                }
+            }
+        }
+    }
+}
+
 androidComponents {
     beforeVariants(selector().withBuildType("release")) { variant: HasUnitTestBuilder ->
         // Use type-casting to safely enable the unit tests
